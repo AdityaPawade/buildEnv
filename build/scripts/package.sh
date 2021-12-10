@@ -10,6 +10,7 @@ REPO_NAME=$6
 LOCAL_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo "local dir : $LOCAL_DIR"
 BUILD_ROOT_DIR="$LOCAL_DIR/.."
+BUILD_ENV_ROOT_DIR="$LOCAL_DIR/../.."
 ROOT_DIR="$MOUNT_DIR"
 echo "root dir : $ROOT_DIR"
 JAR_FILE="$ROOT_DIR/$MODULE/target/$MODULE-$VERSION-$ENV.jar"
@@ -37,7 +38,12 @@ cp -R "$ROOT_DIR"/frontend/* "$ROOT_DIR"/dist/"$APP"/site/
 
 cp "$BUILD_ROOT_DIR"/env/buster-graalvm-app/Dockerfile "$ROOT_DIR"/dist
 
-docker build -t "$REPO_NAME" "$ROOT_DIR"/dist/ --build-arg APP_NAME="$APP" --no-cache
+docker buildx build  \
+   --cache-from type=local,src="$BUILD_ENV_ROOT_DIR"/buildx-cache,mode=max \
+   --cache-to type=local,dest="$BUILD_ENV_ROOT_DIR"/buildx-cache,mode=max \
+   --platform linux/arm64 --build-arg APP_NAME="$APP" --build-arg ARCH=aarch64 \
+   -t "$REPO_NAME" "$ROOT_DIR"/dist/ --no-cache --push
+
 exec_there "$ROOT_DIR"/dist zip -vr "$APP".zip "$APP" -x "*.DS_Store"
 
 rm -rf "$ROOT_DIR"/dist/Dockerfile

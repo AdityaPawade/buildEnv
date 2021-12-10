@@ -25,9 +25,39 @@ function set_osx_env() {
 
 function env_build() {
 
-  docker build -t adtsw/build:buster "$BUILD_LOCAL_DIR"/build/env/buster
-  docker build -t adtsw/build:buster-graalvm "$BUILD_LOCAL_DIR"/build/env/buster-graalvm
-  docker build -t adtsw/build:buster-node "$BUILD_LOCAL_DIR"/build/env/buster-node
+  mkdir -p "$BUILD_LOCAL_DIR"/buildx-cache
+
+  docker buildx build  \
+    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --platform linux/amd64 --build-arg ARCH=amd64 \
+    -t adtsw/build:buster-amd64 "$BUILD_LOCAL_DIR"/build/env/buster --push
+  docker buildx build  \
+    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --platform linux/amd64 --build-arg ARCH=amd64 \
+    -t adtsw/build:buster-graalvm-amd64 "$BUILD_LOCAL_DIR"/build/env/buster-graalvm --push
+  docker buildx build  \
+    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --platform linux/amd64 --build-arg ARCH=amd64 \
+    -t adtsw/build:buster-node-amd64 "$BUILD_LOCAL_DIR"/build/env/buster-node --push
+  
+  docker buildx build \
+    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --platform linux/arm64 --build-arg ARCH=aarch64 \
+    -t adtsw/build:buster-aarch64 "$BUILD_LOCAL_DIR"/build/env/buster --push
+  docker buildx build  \
+    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    --platform linux/arm64 --build-arg ARCH=aarch64 \
+    -t adtsw/build:buster-graalvm-aarch64 "$BUILD_LOCAL_DIR"/build/env/buster-graalvm --push
+#  docker buildx build  \
+#    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+#    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+#    --platform linux/arm64 --build-arg ARCH=aarch64 \
+#    -t adtsw/build:buster-node "$BUILD_LOCAL_DIR"/build/env/buster-node --push
 }
 
 function clean() {

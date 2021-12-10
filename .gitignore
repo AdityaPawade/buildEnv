@@ -33,6 +33,7 @@ release.properties
 metastore_db
 *.ipynb*
 *.json
+buildx-cache
 
 package
 server
