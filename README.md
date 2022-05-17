@@ -2,7 +2,7 @@
 
 ### Sample Usage
 
-"$BUILD_ENV"/make.sh **app** env_build
+"$BUILD_ENV"/make.sh **app** build_env
 
 "$BUILD_ENV"/make.sh **app** build_jar linux
 

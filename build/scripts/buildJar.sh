@@ -15,5 +15,5 @@ function mvn-there() {
   (cd "$DIR" || exit; mvn "$@")
 }
 
-mvn-there "$ROOT_DIR" -P"$ENV" clean compile test install \
+mvn-there "$ROOT_DIR" -P"$ENV" clean compile install -DskipTests \
   -Dmaven.home=$M2_DIR -Dmaven.repo.local=$M2_DIR/repository
