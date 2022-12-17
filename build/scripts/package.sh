@@ -34,7 +34,7 @@ cp "$JAR_FILE" "$ROOT_DIR"/dist/"$APP"/lib/"$PACKAGED_JAR_NAME".jar
 
 cp -R "$ROOT_DIR"/bin/* "$ROOT_DIR"/dist/"$APP"/bin/
 cp -R "$ROOT_DIR"/conf/prod/* "$ROOT_DIR"/dist/"$APP"/conf/
-cp -R "$ROOT_DIR"/frontend/* "$ROOT_DIR"/dist/"$APP"/site/
+cp -R "$ROOT_DIR"/site/* "$ROOT_DIR"/dist/"$APP"/site/
 
 cp "$BUILD_ROOT_DIR"/env/buster-graalvm-app/Dockerfile "$ROOT_DIR"/dist
 
@@ -44,6 +44,6 @@ docker buildx build  \
    --platform linux/arm64 --build-arg APP_NAME="$APP" --build-arg ARCH=aarch64 \
    -t "$REPO_NAME" "$ROOT_DIR"/dist/ --no-cache --push
 
-exec_there "$ROOT_DIR"/dist zip -vr "$APP".zip "$APP" -x "*.DS_Store"
+# exec_there "$ROOT_DIR"/dist zip -r "$APP".zip "$APP" -x "*.DS_Store"
 
 rm -rf "$ROOT_DIR"/dist/Dockerfile
