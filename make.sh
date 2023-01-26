@@ -27,37 +27,47 @@ function env_build() {
 
   mkdir -p "$BUILD_LOCAL_DIR"/buildx-cache
 
-  docker buildx build  \
-    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --platform linux/amd64 --build-arg ARCH=amd64 \
-    -t adtsw/build:buster-amd64 "$BUILD_LOCAL_DIR"/build/env/buster --push
-  docker buildx build  \
-    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --platform linux/amd64 --build-arg ARCH=amd64 \
-    -t adtsw/build:buster-graalvm-amd64 "$BUILD_LOCAL_DIR"/build/env/buster-graalvm --push
-  docker buildx build  \
-    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --platform linux/amd64 --build-arg ARCH=amd64 \
-    -t adtsw/build:buster-node-amd64 "$BUILD_LOCAL_DIR"/build/env/buster-node --push
+  # docker buildx build  \
+    # --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --platform linux/amd64 --build-arg ARCH=amd64 \
+    # -t adtsw/build:buster-amd64 "$BUILD_LOCAL_DIR"/build/env/buster --push
+  # docker buildx build  \
+    # --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --platform linux/amd64 --build-arg ARCH=amd64 \
+    # -t adtsw/build:buster-graalvm-amd64 "$BUILD_LOCAL_DIR"/build/env/buster-graalvm --push
+  # docker buildx build  \
+    # --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --platform linux/amd64 --build-arg ARCH=amd64 \
+    # -t adtsw/build:buster-node-amd64 "$BUILD_LOCAL_DIR"/build/env/buster-node --push
+  # docker buildx build  \
+    # --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --platform linux/amd64 --build-arg ARCH=amd64 \
+    # -t adtsw/build:buster-nginx-amd64 "$BUILD_LOCAL_DIR"/build/env/buster-nginx --push
   
-  docker buildx build \
-    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --platform linux/arm64 --build-arg ARCH=aarch64 \
-    -t adtsw/build:buster-aarch64 "$BUILD_LOCAL_DIR"/build/env/buster --push
-  docker buildx build  \
-    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-    --platform linux/arm64 --build-arg ARCH=aarch64 \
-    -t adtsw/build:buster-graalvm-aarch64 "$BUILD_LOCAL_DIR"/build/env/buster-graalvm --push
-#  docker buildx build  \
-#    --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-#    --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
-#    --platform linux/arm64 --build-arg ARCH=aarch64 \
-#    -t adtsw/build:buster-node "$BUILD_LOCAL_DIR"/build/env/buster-node --push
+  # docker buildx build \
+    # --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --platform linux/arm64 --build-arg ARCH=aarch64 \
+    # -t adtsw/build:buster-aarch64 "$BUILD_LOCAL_DIR"/build/env/buster --push
+  # docker buildx build  \
+    # --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --platform linux/arm64 --build-arg ARCH=aarch64 \
+    # -t adtsw/build:buster-graalvm-aarch64 "$BUILD_LOCAL_DIR"/build/env/buster-graalvm --push
+  # docker buildx build  \
+    # --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --platform linux/arm64 --build-arg ARCH=aarch64 \
+    # -t adtsw/build:buster-node "$BUILD_LOCAL_DIR"/build/env/buster-node --push
+  # docker buildx build  \
+    # --cache-from type=local,src="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --cache-to type=local,dest="$BUILD_LOCAL_DIR"/buildx-cache,mode=max \
+    # --platform linux/arm64 --build-arg ARCH=aarch64 \
+    # -t adtsw/build:buster-nginx-aarch64 "$BUILD_LOCAL_DIR"/build/env/buster-nginx --push
 }
 
 function clean() {
@@ -149,6 +159,15 @@ function kill_jar_run_linux() {
 	  "$BUILD_MOUNT_DIR"/scripts/killJar.sh "linux" "$module"
 }
 
+function build_site() {
+
+  set_osx_env
+  app="$1"
+  env="$2"
+  module="$3"
+	"$BUILD_MOUNT_DIR"/scripts/buildSite.sh "$app" "$env" "$module"
+}
+
 function package() {
 
   set_osx_env
@@ -159,6 +178,16 @@ function package() {
   packaged_jar_name="$5"
   repo_name="$6"
 	"$BUILD_MOUNT_DIR"/scripts/package.sh "$app" "$env" "$module" "$version" "$packaged_jar_name" "$repo_name"
+}
+
+function package_site() {
+
+  set_osx_env
+  app="$1"
+  env="$2"
+  module="$3"
+  repo_name="$4"
+	"$BUILD_MOUNT_DIR"/scripts/packageSite.sh "$app" "$env" "$module" "$repo_name"
 }
 
 function test_run() {
@@ -366,12 +395,22 @@ case "$action" in
         ;;
 		esac
 		;;
+	build_site)
+    module=$4
+    repo_name="$5"
+    build_site "$app" "$env" "$module"
+		;;
 	package)
     module=$4
     version="$5"
     packaged_jar_name="$6"
     repo_name="$7"
     package "$app" "$env" "$module" "$version" "$packaged_jar_name" "$repo_name"
+		;;
+	package_site)
+    module=$4
+    repo_name="$5"
+    package_site "$app" "$env" "$module" "$repo_name"
 		;;
 	run_tests)
     case "$env" in
@@ -429,7 +468,7 @@ case "$action" in
     launch_bash_on_node
     ;;
 	*)
-    echo "Usage: $0 {build_env|clean|build_jar|run_jar|run_tests|stop|package|run_tests|build_native|run_native|publish_to_dropbox|publish_to_docker|bash_build|bash_graalvm|bash_test}" >&2
+    echo "Usage: $0 {build_env|clean|build_jar|run_jar|run_tests|stop|build_site|package|package_site|run_tests|build_native|run_native|publish_to_dropbox|publish_to_docker|bash_build|bash_graalvm|bash_test}" >&2
     exit 1
     ;;
 esac
