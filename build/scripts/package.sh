@@ -27,14 +27,14 @@ mkdir -p "$ROOT_DIR"/dist/"$APP"
 mkdir -p "$ROOT_DIR"/dist/"$APP"/bin
 mkdir -p "$ROOT_DIR"/dist/"$APP"/lib
 mkdir -p "$ROOT_DIR"/dist/"$APP"/conf
-mkdir -p "$ROOT_DIR"/dist/"$APP"/site
+# mkdir -p "$ROOT_DIR"/dist/"$APP"/site
 mkdir -p "$ROOT_DIR"/dist/"$APP"/run
 
 cp "$JAR_FILE" "$ROOT_DIR"/dist/"$APP"/lib/"$PACKAGED_JAR_NAME".jar
 
 cp -R "$ROOT_DIR"/bin/* "$ROOT_DIR"/dist/"$APP"/bin/
 cp -R "$ROOT_DIR"/conf/prod/* "$ROOT_DIR"/dist/"$APP"/conf/
-cp -R "$ROOT_DIR"/site/* "$ROOT_DIR"/dist/"$APP"/site/
+# cp -R "$ROOT_DIR"/site/* "$ROOT_DIR"/dist/"$APP"/site/
 
 cp "$BUILD_ROOT_DIR"/env/buster-graalvm-app/Dockerfile "$ROOT_DIR"/dist
 
