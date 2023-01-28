@@ -46,4 +46,4 @@ docker buildx build  \
 
 # exec_there "$ROOT_DIR"/dist zip -r "$APP".zip "$APP" -x "*.DS_Store"
 
-rm -rf "$ROOT_DIR"/dist/Dockerfile
+rm -rf "$ROOT_DIR"/dist

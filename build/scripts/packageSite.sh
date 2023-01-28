@@ -32,4 +32,4 @@ docker buildx build  \
    --platform linux/arm64 --build-arg APP_NAME="$APP" --build-arg ARCH=aarch64 \
    -t "$REPO_NAME" "$ROOT_DIR"/dist/ --no-cache --push
 
-# rm -rf "$ROOT_DIR"/dist/Dockerfile
+rm -rf "$ROOT_DIR"/dist
